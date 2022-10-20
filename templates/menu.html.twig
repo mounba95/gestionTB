@@ -1,0 +1,119 @@
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-tachometer-alt "></i>
+                <p>
+                    Tableau de bord
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
+
+                <li class="nav-item">
+                    <a href="{{ path('tableau_bord')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tableau de bord</p>
+                    </a>
+                </li> 
+                <li class="nav-item">
+                    <a href="{{ path('tableau_bord_filtrage')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tableau de bord par filtrage</p>
+                    </a>
+                </li>
+
+
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('liste_user')}}" class="nav-link">
+                <i class="nav-icon fas fa-users"></i>
+                <p>
+                    Utilisateurs
+                </p>
+            </a>
+        </li>
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-table"></i>
+                <p>
+                    Données de base
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
+
+                <li class="nav-item">
+                    <a href="{{ path('typece_liste')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Type CE</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('zoneImpce_liste')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Zone d'implementation CE</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('region_liste')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Region</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('departement_liste')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Departement</p>
+                    </a>
+                </li> <li class="nav-item">
+                    <a href="{{ path('commune_liste')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Commune</p>
+                    </a>
+                </li>
+
+        </li>
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-book"></i>
+                <p>
+                    Indicateur
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
+
+                <li class="nav-item">
+                    <a href="{{ path('indicateurBase_liste')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Indicateur de base</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('indicateur_liste')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Indicateur</p>
+                    </a>
+                </li>
+
+        </li>
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-desktop"></i>
+                <p>
+                    Centre d'état civil
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
+
+                <li class="nav-item">
+                    <a href="{{ path('centre_liste')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Centre EC</p>
+                    </a>
+                </li>
+
+
+        </li>
+    </ul>
+</nav>

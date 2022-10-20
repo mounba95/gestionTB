@@ -1,0 +1,155 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Type du centre de l'état civil</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+                        <li class="breadcrumb-item active">TypeCE</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+
+    <section class="content">
+
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Formulaire d'ajout d'un CE</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Nom du type <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.nomTypeCE, {'attr': {'placeholder':'Nom du type du centre de l état civil', 'required':true} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Description :</label>
+                            {{ form_widget(form.descriptionTypeCE, {'attr': {'placeholder':'Description du type du centre de l état civil'} }) }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        <!-- /.form-group -->
+
+                        <!-- /.form-group -->
+                    </div>
+                    {{ form_end(form) }}
+                    <!-- /.col -->
+                </div>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Liste des types CE</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                {% for message in app.flashes('doublon') %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('suppression') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('suppression_imp') %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('valider') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <table id="table_typeCE" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for typece in typeces %}
+                        <tr>
+                            <td>{{ typece.id }}</td>
+                            <td>{{ typece.nomTypeCE }}</td>
+                            <td>{{ typece.descriptionTypeCE }}</td>
+
+
+                            <td class="center">
+                                <a href="{{ path('typece_supprimer',{'id':typece.id}) }}" id="delBtn"  data-toggle="modal">
+                                    <button type="button" class="btn btn-outline-danger btn-rounded"><i class="fa fa-trash"></i></button>
+                                </a>
+                                <a href="{{ path('typece_modifier',{'id':typece.id}) }}">
+                                    <button type="button" class="btn btn-outline-success btn-rounded"><i class="fa fa-edit"></i></button>
+                                </a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {#<a href="{{ path('reset_Password',{'id':app.user.id}) }}">ResetPassword</a>
+                #}
+            </div>
+
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <div class="modal fade" id="myModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4><b>Êtes-vous sûr de vouloir supprimer ce type ?</b></h4>
+                    <p>Cette action peut être annulée</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a  href="" type="button" class="btn btn-danger" id="delRef"><i class="fa fa-trash" aria-hidden="true"></i>Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

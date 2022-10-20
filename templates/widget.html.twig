@@ -1,0 +1,57 @@
+<div class="container-fluid">
+<br>
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-primary"><i class="fa fa-user-plus"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Naissances</span>
+                <span class="info-box-number">{{ render(controller('App\\Controller\\CentreController::getNaissanceByAnneeEncour')) }} </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-success"><i class="fa fa-heart"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Mariages</span>
+                <span class="info-box-number">{{ render(controller('App\\Controller\\CentreController::getMariageByAnneeEncour')) }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-warning"><i class="fa fa-heart-broken"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Divores/répudiations</span>
+                <span class="info-box-number">{{ render(controller('App\\Controller\\CentreController::getDivorceByAnneeEncour')) }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-danger"><i class="fa fa-user-minus"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Décès</span>
+                <span class="info-box-number">{{ render(controller('App\\Controller\\CentreController::getDeceByAnneeEncour')) }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        </div>

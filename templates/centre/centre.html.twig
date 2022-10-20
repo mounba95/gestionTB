@@ -1,0 +1,193 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Centre</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+                        <li class="breadcrumb-item active">Centre</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+
+    <section class="content">
+
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Formulaire d'ajout d'un centre d'état civil</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Commune <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.commune, {'attr': {'class':'form-control select2bs4','placeholder':'Commune', 'required':true} }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>Type <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.typeCE, {'attr': {'class':'form-control select2bs4','placeholder':'type du centre de l état civil', 'required':true} }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>Zone <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.zoneImCE, {'attr': {'class':'form-control select2bs4','placeholder':'zone d implementation du centre de l état civil', 'required':true} }) }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Nom du centre <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.nomCE, {'attr': {'placeholder':'Nom du centre de l état civil', 'required':true} }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>Adresse du centre <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.adresseCE, {'attr': {'placeholder':'adresse/quartier du centre de l état civil', 'required':true} }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>Date de création du centre  :</label>
+                            {{ form_widget(form.dateCreationCE, {'attr': {'placeholder':'date de création du centre de l état civil', 'required':true} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Chef du centre <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.chefCE, {'attr': {'placeholder':'reponsable du centre de l état civil', 'required':true} }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>Contact du chef du centre <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.numeroChefCE, {'attr': {'placeholder':'contact du reponsable du centre de l état civil', 'required':true} }) }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        <!-- /.form-group -->
+
+                        <!-- /.form-group -->
+                    </div>
+                    {{ form_end(form) }}
+                    <!-- /.col -->
+                </div>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Liste des centres de l'état civil</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                {% for message in app.flashes('doublon') %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('suppression') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('suppression_imp') %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('valider') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <table id="table_centre" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Commune</th>
+                        <th>Nom</th>
+                        <th>Type</th>
+                        <th>Adresse</th>
+                        <th>Date creation</th>
+                        <th>Zone</th>
+                        <th>Chef CE</th>
+                        <th>Cellulaire</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for centre in centres %}
+                        <tr>
+                            <td>{{ centre.id }}</td>
+                            <td>{{ centre.commune }}</td>
+                            <td>{{ centre.nomCE }}</td>
+                            <td>{{ centre.typeCE }}</td>
+                            <td>{{ centre.adresseCE }}</td>
+                            <td>{{ centre.dateCreationCE |date('d-m-Y H:i:s')}}</td>
+                            <td>{{ centre.zoneImCE }}</td>
+                            <td>{{ centre.chefCE }}</td>
+                            <td>{{ centre.numeroChefCE }}</td>
+                            <td class="center">
+                                <a href="{{ path('centre_detail',{'id':centre.id}) }}">
+                                    <button type="button" class="btn btn-outline-primary btn-rounded"><i class="fa fa-eye"></i></button>
+                                </a>
+                                <a href="{{ path('centre_modifier',{'id':centre.id}) }}">
+                                    <button type="button" class="btn btn-outline-success btn-rounded"><i class="fa fa-edit"></i></button>
+                                </a>
+                                <a href="{{ path('centre_supprimer',{'id':centre.id}) }}" id="delBtn"  data-toggle="modal">
+                                    <button type="button" class="btn btn-outline-danger btn-rounded"><i class="fa fa-trash"></i></button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {#<a href="{{ path('reset_Password',{'id':app.user.id}) }}">ResetPassword</a>
+                #}
+            </div>
+
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <div class="modal fade" id="myModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4><b>Êtes-vous sûr de vouloir supprimer ce type ?</b></h4>
+                    <p>Cette action peut être annulée</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a  href="" type="button" class="btn btn-danger" id="delRef"><i class="fa fa-trash" aria-hidden="true"></i>Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

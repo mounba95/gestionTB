@@ -1,0 +1,161 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Commune</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+                        <li class="breadcrumb-item active">Commune</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+
+    <section class="content">
+
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Formulaire d'ajout d'une commune</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Departement <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.departement, {'attr': {'class':'form-control select2bs4','placeholder':'Veuillez selectionner le departement', 'required':true} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Nom <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.nomCommune, {'attr': {'placeholder':'Nom de la commune de base', 'required':true} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Code  <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.codeCommune, {'attr': {'placeholder':'Code de la commune de base', 'min':'0'} }) }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        <!-- /.form-group -->
+
+                        <!-- /.form-group -->
+                    </div>
+                    {{ form_end(form) }}
+                    <!-- /.col -->
+                </div>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Liste des communes</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                {% for message in app.flashes('doublon') %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('suppression') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('suppression_imp') %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('valider') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <table id="table_commune" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Departement</th>
+                        <th>Code</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for commune in communes %}
+                        <tr>
+                            <td>{{ commune.id }}</td>
+                            <td>{{ commune.nomCommune }}</td>
+                            <td>{{ commune.departement.nomDepartement }}</td>
+                            <td>{{ commune.codeCommune }}</td>
+
+                            <td class="center">
+                                <a href="{{ path('commune_supprimer',{'id':commune.id}) }}" id="delBtn"  data-toggle="modal">
+                                    <button type="button" class="btn btn-outline-danger btn-rounded"><i class="fa fa-trash"></i></button>
+                                </a>
+                                <a href="{{ path('commune_modifier',{'id':commune.id}) }}">
+                                    <button type="button" class="btn btn-outline-success btn-rounded"><i class="fa fa-edit"></i></button>
+                                </a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <div class="modal fade" id="myModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4><b>Êtes-vous sûr de vouloir supprimer cet enregistrement ?</b></h4>
+                    <p>Cette action peut être annulée</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a  href="" type="button" class="btn btn-danger" id="delRef"><i class="fa fa-trash" aria-hidden="true"></i>Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

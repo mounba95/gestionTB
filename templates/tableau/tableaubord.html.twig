@@ -1,0 +1,88 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Données</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+                        <li class="breadcrumb-item active">Données</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+
+    <section class="content">
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Tableau de bord</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+               
+                <table id="table_centre" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Région</th>
+                        <th>Département</th>
+                        <th>Commune</th>
+                        <th>Centre</th>
+                        <th>Indicateur</th>
+                        <th>Année</th>
+                        <th>Type centre</th>
+                        <th>Zone</th>
+                        <th>Nombre</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for centre in data %}
+                        <tr>
+                            <td>{{ centre.region }}</td>
+                            <td>{{ centre.departement }}</td>
+                            <td>{{ centre.commune }}</td>
+                            <td>{{ centre.centre }}</td>
+                            <td>{{ centre.indicateur }}</td>
+                            <td>{{ centre.annee }}</td>
+                            <td>{{ centre.typeCE}}</td>
+                            <td>{{ centre.zoneCE }}</td>
+                            <td>{{ centre.nombre }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {#<a href="{{ path('reset_Password',{'id':app.user.id}) }}">ResetPassword</a>
+                #}
+            </div>
+
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <div class="modal fade" id="myModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4><b>Êtes-vous sûr de vouloir supprimer ce type ?</b></h4>
+                    <p>Cette action peut être annulée</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a  href="" type="button" class="btn btn-danger" id="delRef"><i class="fa fa-trash" aria-hidden="true"></i>Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Utilisateurs</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+                        <li class="breadcrumb-item active">Utilisateurs</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <section class="content">
+      <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Formulaire de modification d'un utilisateur</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Nom <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.nom, {'attr': {'class':'form-control ','placeholder':'Veuillez saisir le nom de l utilisateur', 'required':true} }) }}
+                        </div> 
+                        <div class="form-group">
+                            <label>Prénom <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.prenom, {'attr': {'class':'form-control ','placeholder':'Veuillez saisir le prénom de l utilisateur', 'required':true} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    
+                        <div class="form-group">
+                            <label>Adresse <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.adresse, {'attr': {'placeholder':'Adresse de l utilisateur', 'required':true} }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.telephone, {'attr': {'placeholder':'Numéro de contact de l utilisateur', 'required':true} }) }}
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Nom de l'utilisateur  <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.nomUtilisateur, {'attr': {'disabled':'disabled','placeholder':'Nom de l utilisateur pour se connecter'} }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>Role <span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.roles, {'attr': {'placeholder':'privilége de l utilisateur'} }) }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                         <a href="{{ path('liste_user') }}">
+                            <button type="button" class="btn btn-danger ">Annuler</button>
+                        </a>
+                        <!-- /.form-group -->
+
+                        <!-- /.form-group -->
+                    </div>
+                    {{ form_end(form) }}
+                    <!-- /.col -->
+                </div>
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-header">
+                <h3 class="card-title">Liste des utilisateurs</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                {% for message in app.flashes('desactive') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %} {% for message in app.flashes('active') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('register') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('suppression') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('notice') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <table id="table_utilisateur" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Prenom</th>
+                        <th>Adresse</th>
+                        <th>Username</th>
+                        <th>Téléphone</th>
+                        <th>Rôles</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.nom }}</td>
+                            <td>{{ user.prenom }}</td>
+                            <td>{{ user.adresse }}</td>
+                            <td>{{ user.nomUtilisateur }}</td>
+                            <td>{{ user.telephone }}</td>
+                            <td>
+                                {% for unrole in user.roles %}
+                                    {{unrole}}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% if user.isActive == 1 %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+
+                                    <span class="badge bg-danger">Désactivé</span>
+
+                                {% endif %}
+
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {#<a href="{{ path('reset_Password',{'id':app.user.id}) }}">ResetPassword</a>
+                #}
+            </div>
+
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <div class="modal fade" id="myModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4><b>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</b></h4>
+                    <p>Cette action peut être annulée</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a  href="" type="button" class="btn btn-danger" id="delRef"><i class="fa fa-trash" aria-hidden="true"></i>Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

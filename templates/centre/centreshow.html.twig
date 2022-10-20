@@ -1,0 +1,180 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Centre</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Tableau de bord</a></li>
+                        <li class="breadcrumb-item active">Centre</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+
+    <section class="content">
+
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Détail du centre d'état civil</h3>
+                <div class="card-tools">
+                    <a href="{{ path('centre_liste') }}">
+                        <button type="button" class="btn btn-info ">Retour à la liste des centres</button>
+                    </a>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>Nom</th> <td>{{ centre.nomCE }}</td>
+                                <th>Commune</th><td>{{ centre.commune }}</td>
+                            </tr>
+                            <tr>
+                                <th>Type</th> <td>{{ centre.typeCE }}</td>
+                                <th>Adresse</th> <td>{{ centre.adresseCE }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date creation</th><td>{{ centre.dateCreationCE |date('d-m-Y H:i:s')}}</td>
+                                <th>Zone</th> <td>{{ centre.zoneImCE }}</td>
+                            </tr>
+                            <tr>
+                                <th>Chef CE</th> <td>{{ centre.chefCE }}</td>
+                                <th>Cellulaire</th><td>{{ centre.numeroChefCE }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3">
+                        {{ form_start(form) }}
+                        <div class="form-group">
+                            <label>Indicateur<span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.indicateur, {'attr': {'class':'form-control select2bs4','placeholder':'Indicateur', 'required':true} }) }}
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre<span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.nombre, {'attr': {'class':'form-control','placeholder':'Nombre', 'required':true, 'min':'0'} }) }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Année<span style="color: red;">*</span> :</label>
+                            {{ form_widget(form.annee, {'attr': {'class':'form-control','placeholder':'Année', 'required':true, 'min':'0'} }) }}
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        {{ form_end(form) }}
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Données sur les faits d'état civil d'un centre</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                {% for message in app.flashes('doublon') %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('suppression') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('suppression_imp') %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('valider') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <table id="table_faitec" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Indicateur</th>
+                        <th>Nombre</th>
+                        <th>Année</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for faitEC in faitECs %}
+                        <tr>
+                            <td>{{ faitEC.id }}</td>
+                            <td>{{ faitEC.indicateur.nomIndicateur }}</td>
+                            <td>{{ faitEC.nombre }}</td>
+                            <td>{{ faitEC.annee }}</td>
+                            <td>{{ faitEC.date |date('d-m-Y H:i:s')}}</td>
+                            <td class="center">
+                                <a href="{{ path('ind_modifier',{'id':faitEC.id}) }}">
+                                    <button type="button" class="btn btn-outline-success btn-rounded"><i class="fa fa-edit"></i></button>
+                                </a>
+                                <a href="{{ path('ind_supprimer',{'id':faitEC.id}) }}" id="delBtn"  data-toggle="modal">
+                                    <button type="button" class="btn btn-outline-danger btn-rounded"><i class="fa fa-trash"></i></button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {#<a href="{{ path('reset_Password',{'id':app.user.id}) }}">ResetPassword</a>
+                #}
+            </div>
+
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <div class="modal fade" id="myModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4><b>Êtes-vous sûr de vouloir supprimer ce type ?</b></h4>
+                    <p>Cette action peut être annulée</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a  href="" type="button" class="btn btn-danger" id="delRef"><i class="fa fa-trash" aria-hidden="true"></i>Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
